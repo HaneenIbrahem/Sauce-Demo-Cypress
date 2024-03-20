@@ -35,3 +35,20 @@
 //     }
 //   }
 // }
+import LoginPage from "./pageObjects/loginPage";
+
+const loginObj: LoginPage = new LoginPage();
+declare global {
+    namespace Cypress {
+        interface Chainable {
+            // addNewUser: typeof addNewUser
+            login: (username:string, password:string) => Chainable
+        }
+    }
+
+}
+Cypress.Commands.add('login', (username:string, password:string)=>{
+    cy.visit('https://www.saucedemo.com')
+    loginObj.login(username,password);
+    cy.url().should('include', '/inventory.html');
+});
